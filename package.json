@@ -1,0 +1,21 @@
+{
+  "name": "prsr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ungear/prsr.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ungear/prsr/issues"
+  },
+  "homepage": "https://github.com/ungear/prsr#readme"
+}
