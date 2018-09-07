@@ -14,12 +14,20 @@ var goalUrls = entries
   .map(x => x.request.url)
   .filter(x => /^https:\/\/.*\.mp3\?extra/.test(x));
 
-downloadingRecursion();
+downloading(goalUrls);
 
-function downloadingRecursion() {
-  if (goalUrls.length === 0) return;
-  let url = goalUrls.pop();
-  downloadFileAsync(url).then(downloadingRecursion);
+async function downloading(urls){
+    let loader = asyncLoadingGenerator(urls);
+    for await (let x of loader){
+      console.log("downloaded file: " + x)
+    }
+}
+
+async function* asyncLoadingGenerator(urlList){
+  while(urlList.length){
+    let f = await downloadFileAsync(urlList.pop())
+    yield f;
+  }
 }
 
 function downloadFileAsync(url) {
@@ -31,7 +39,7 @@ function downloadFileAsync(url) {
       response.pipe(file);
       response.on("end", _ => {
         console.log("finish " + filename);
-        resolve();
+        resolve(filename);
       });
     });
   });
