@@ -1,6 +1,7 @@
-var https = require("https");
-var fs = require("fs");
-var path = require("path");
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
+const { readTags } = require("./tagsProcessor");
 
 module.exports.asyncDownloaderFactory = function(downloadDirPath) {
   return function(url) {
@@ -9,11 +10,18 @@ module.exports.asyncDownloaderFactory = function(downloadDirPath) {
       //console.log("started " + filename);
       var request = https
         .get(url, function(response) {
-          let file = fs.createWriteStream(
-            path.resolve(downloadDirPath, filename)
-          );
+          let filePath = path.resolve(downloadDirPath, filename);
+          let file = fs.createWriteStream(filePath);
           response.pipe(file);
-          response.on("end", _ => {
+          response.on("end", async _ => {
+            let tags = await readTags(file.path);
+            //console.log(tags);
+            if (tags && tags.title) {
+              fs.rename(
+                filePath,
+                path.resolve(downloadDirPath, tags.title + ".mp3")
+              );
+            }
             //console.log("finish " + filename);
             resolve({ success: true });
           });

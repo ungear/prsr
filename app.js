@@ -19,6 +19,11 @@ if (!fs.existsSync(DOWNLOAD_DIR_PATH)) {
 }
 
 let goalUrls = getResourceUrls(CONFIG_PATH);
+// fs.writeFile("debug-urls.json", JSON.stringify(goalUrls), err => {
+//   if (err) throw err;
+//   console.log("The file has been saved!");
+// });
+
 let asyncDownloader = asyncDownloaderFactory(DOWNLOAD_DIR_PATH);
 
 downloading(goalUrls);
